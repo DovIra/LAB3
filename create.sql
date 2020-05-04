@@ -1,0 +1,48 @@
+CREATE TABLE LOCATIONS(
+location_name  VARCHAR(50) NOT NULL
+);
+ALTER TABLE LOCATIONS ADD CONSTRAINT PK_LOCATION PRIMARY KEY ( location_name );
+
+CREATE TABLE WIND_DIRECTION(
+    wind_direction VARCHAR(3) NOT NULL
+);
+ALTER TABLE WIND_DIRECTION ADD CONSTRAINT PK_WIND_DIR PRIMARY KEY ( wind_direction );
+
+
+CREATE TABLE WEATHER_DAILY (
+weather_date DATE NOT NULL,
+location_code VARCHAR(50) NOT NULL,
+rainfall NUMBER(5,2) DEFAULT NULL,
+evaporation NUMBER(5,2)  DEFAULT NULL,
+sunshine NUMBER(5,2)  DEFAULT NULL
+);
+ALTER TABLE WEATHER_DAILY ADD CONSTRAINT PK_WEATHER_DAY PRIMARY KEY ( Location_code,
+                                                            weather_date );
+CREATE TABLE WEATHER_HOURLY (
+weather_date DATE NOT NULL,
+location_code VARCHAR(50) NOT NULL,
+time INTEGER NOT NULL,
+wind_dir VARCHAR(3) DEFAULT NULL,
+wind_speed NUMBER(5,2) DEFAULT NULL,
+humidity NUMBER(3) DEFAULT NULL,
+pressure NUMBER(10,2) DEFAULT NULL,
+cloud INTEGER DEFAULT NULL,
+temperature NUMBER(5,2) DEFAULT NULL
+);
+
+ALTER TABLE WEATHER_HOURLY ADD CONSTRAINT PK_WEATHER_HOURS PRIMARY KEY ( Location_code,
+                                                            weather_date, time );
+
+ALTER TABLE WEATHER_DAILY
+    ADD CONSTRAINT FK_WEATHER_DAILY_LOCATION FOREIGN KEY ( location_code )
+        REFERENCES LOCATIONS ( location_name );
+
+
+ALTER TABLE WEATHER_HOURLY
+    ADD CONSTRAINT FK_WEATHER_HOURLY_LOCATION FOREIGN KEY ( location_code, weather_date )
+        REFERENCES WEATHER_DAILY ( location_code, weather_date );
+
+
+ALTER TABLE WEATHER_HOURLY
+    ADD CONSTRAINT FK_WEATHER_HOURLY_WDIR FOREIGN KEY ( wind_dir )
+        REFERENCES WIND_DIRECTION ( wind_direction );
