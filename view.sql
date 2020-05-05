@@ -1,5 +1,5 @@
 CREATE VIEW WEATHER_HOURLY_3PM AS
-SELECT 
+SELECT
     WEATHER_HOURLY.WEATHER_DATE,
        WEATHER_HOURLY.LOCATION_CODE,
        WEATHER_HOURLY.TIME,
@@ -31,26 +31,31 @@ WHERE TIME = 9
 ;
 
 CREATE VIEW weather_details AS
-SELECT LOCATIONS.LOCATION_NAME,
-       WEATHER_DAILY.WEATHER_DATE,
-       UU.MINTEMP,
-       UU.MAXTEMP,
-       WEATHER_DAILY.RAINFALL,
-       WEATHER_DAILY.EVAPORATION,
-       WEATHER_DAILY.SUNSHINE,
-       WH9AM.WIND_DIR AS wind_dir_9am,
-       WH3PM.WIND_DIR AS wind_dir_3pm,
-       WH9AM.WIND_SPEED AS wind_speed_9am,
-       WH3PM.WIND_SPEED AS wind_speed_3am,
-       WH9AM.HUMIDITY AS humidity_9am,
-       WH3PM.HUMIDITY AS humidity_3pm,
-       WH9AM.PRESSURE AS pressure_9am,
-       WH3PM.PRESSURE AS pressure_3pm,
-       WH9AM.CLOUD AS cloud_9am,
-       WH3PM.CLOUD AS cloud_3pm,
-       WH9AM.TEMPERATURE AS temp_9am,
-       WH3PM.TEMPERATURE AS temp_3pm,
-       CASE WHEN WEATHER_DAILY.RAINFALL > 0 THEN 'Yes' ELSE 'No' END AS raintoday
+SELECT
+       to_date(TO_CHAR(WEATHER_DAILY.WEATHER_DATE, 'YYYY-mm-dd'), 'YYYY-mm-dd') as WeatherDate,
+       LOCATIONS.LOCATION_NAME as Location,
+       UU.MINTEMP as MinTemp,
+       UU.MAXTEMP as MaxTemp,
+       WEATHER_DAILY.RAINFALL as Rainfall,
+       WEATHER_DAILY.EVAPORATION as Evaporation,
+       WEATHER_DAILY.SUNSHINE as Sunshine,
+       WEATHER_DAILY.WIND_GUST_DIR as WindGustDir,
+       WEATHER_DAILY.WIND_GUST_SPEED as WindGustSpeed,
+       WH9AM.WIND_DIR AS WindDir9am,
+       WH3PM.WIND_DIR AS WindDir3pm,
+       WH9AM.WIND_SPEED AS WindSpeed9am,
+       WH3PM.WIND_SPEED AS WindSpeed3pm,
+       WH9AM.HUMIDITY AS Humidity9am,
+       WH3PM.HUMIDITY AS Humidity3pm,
+       WH9AM.PRESSURE AS Pressure9am,
+       WH3PM.PRESSURE AS Pressure3pm,
+       WH9AM.CLOUD AS Cloud9am,
+       WH3PM.CLOUD AS Cloud3pm,
+       WH9AM.TEMPERATURE AS Temp9am,
+       WH3PM.TEMPERATURE AS Temp3pm,
+       CASE WHEN WEATHER_DAILY.RAINFALL > 0 THEN 'Yes' ELSE 'No' END AS RainToday,
+       WEATHER_DAILY.RAINFALL_TOMORROW as RISK_MM,
+       CASE WHEN WEATHER_DAILY.RAINFALL_TOMORROW > 0 THEN 'Yes' ELSE 'No' END as RainTomorrow
 FROM WEATHER_DAILY
 JOIN LOCATIONS ON LOCATIONS.LOCATION_NAME = WEATHER_DAILY.location_code
 JOIN (
