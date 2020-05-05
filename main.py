@@ -17,11 +17,9 @@ from WEATHER_DAILY
 join LOCATIONS on LOCATIONS.LOCATION_NAME = WEATHER_DAILY.location_code
 group by LOCATION_CODE
 order by sum(RAINFALL) desc
-FETCH FIRST 5 ROWS ONLY;
-"""
+FETCH FIRST 5 ROWS ONLY"""
 
 cursor.execute(query_1)
-
 val_query1 = list()
 lab_query1 = list()
 
@@ -37,8 +35,7 @@ from WEATHER_DAILY
 join LOCATIONS on LOCATIONS.LOCATION_NAME = WEATHER_DAILY.location_code
 group by LOCATION_CODE
 order by 2 desc
-FETCH FIRST 10 ROWS ONLY
-;
+FETCH FIRST 20 ROWS ONLY
 """
 
 cursor.execute(query_2)
@@ -54,15 +51,15 @@ for location_name, sum_rainfall in cursor:
 
 # ----query3------
 
-query_3 = """sselect
-       to_char(WEATHER_DATE,'Month'),
-       extract(month from WEATHER_DATE),
+query_3 = """select
+       to_char(WEATHERDATE,'Month'),
+       extract(month from WEATHERDATE),
        ROUND(avg((MINTEMP+MAXTEMP)/2),2) as avg_temperature
 from WEATHER_DETAILS
-where extract(year from WEATHER_DATE) = 2017
-group by to_char(WEATHER_DATE,'Month'), extract(month from WEATHER_DATE)
-order by extract(month from WEATHER_DATE)
-;"""
+where extract(year from WEATHERDATE) = 2017
+group by to_char(WEATHERDATE,'Month'), extract(month from WEATHERDATE)
+order by extract(month from WEATHERDATE)
+"""
 
 cursor.execute(query_3)
 
@@ -109,7 +106,7 @@ second = {
     'type': 'box',
     'boxType': 'plot',
     'fileId': 'DovIra:' + graph_query2.split('/')[4],
-    'title': '2 запит-кількість опадів у % по містах Австралії за 2017р',
+    'title': '2 запит-перші 20 міст з найбільшою кількістю опадів у %, по Австралії',
 
 }
 thirth = {
