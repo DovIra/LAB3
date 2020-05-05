@@ -1,5 +1,5 @@
 DECLARE
-    TYPE t_wind_dir IS VARRAY(5) OF WIND_DIRECTION.WIND_DIRECTION%Type;
+    TYPE t_wind_dir IS VARRAY(5) OF VARCHAR(3);
     v_location varchar(50);
     v_date date;
     v_wind_dir t_wind_dir;
