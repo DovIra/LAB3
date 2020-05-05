@@ -12,36 +12,40 @@ BEGIN
     FOR i IN 1 .. v_wind_dir.count
     LOOP
         v_date := TO_DATE(TO_CHAR(SYSDATE-i, 'YYYY-mm-dd'), 'YYYY-mm-dd');
-        insert into WEATHER_DAILY(weather_date, location_code, RAINFALL, EVAPORATION, SUNSHINE)
+        insert into WEATHER_DAILY(weather_date, location_code, RAINFALL, EVAPORATION, SUNSHINE, 
+                                  WIND_GUST_DIR, WIND_GUST_SPEED, RAINFALL_TOMORROW)
         values (
                 v_date,
                 v_location,
                 round(dbms_random.value(0, 20)*10,2),
                 round(dbms_random.value(0, 20)*10,2),
+                round(dbms_random.value(0, 20)*10,2),
+                v_wind_dir(i),
+                round(dbms_random.value(0, 20)),
                 round(dbms_random.value(0, 20)*10,2)
                 );
 
         insert into WEATHER_HOURLY(WEATHER_DATE, LOCATION_CODE, TIME, WIND_DIR, WIND_SPEED, HUMIDITY,
                                    PRESSURE, CLOUD, TEMPERATURE)
         values(
-            v_date,
-               v_location, 9, v_wind_dir,
+           v_date,
+           v_location, 9, v_wind_dir(i),
            round(dbms_random.value(0, 20)),
            round(dbms_random.value(0, 100)),
            round(dbms_random.value(900, 1050), 1),
-            round(dbms_random.value(0, 9)),
-               round(dbms_random.value(10, 15), 2)
+           round(dbms_random.value(0, 9)),
+           round(dbms_random.value(10, 15), 2)
           );
         insert into WEATHER_HOURLY(WEATHER_DATE, LOCATION_CODE, TIME, WIND_DIR, WIND_SPEED, HUMIDITY,
                                    PRESSURE, CLOUD, TEMPERATURE)
         values(
-            v_date,
-               v_location, 15, v_wind_dir,
+           v_date,
+           v_location, 15, v_wind_dir(i),
            round(dbms_random.value(0, 20)),
            round(dbms_random.value(0, 100)),
            round(dbms_random.value(900, 1050), 1),
-            round(dbms_random.value(0, 9)),
-               round(dbms_random.value(15, 21), 2)
+           round(dbms_random.value(0, 9)),
+           round(dbms_random.value(15, 21), 2)
           );
 
     END LOOP;
