@@ -16,9 +16,7 @@ wind_dirs = []
 reader = csv.DictReader(open('weatherAUS.csv'), delimiter=',')
 
 for row in reader:
-    count += 1
-   
-
+    
     date = row['Date']
     location = row['Location']
     rainfall = 0 if row['Rainfall'] == 'NA' else row['Rainfall']
@@ -76,7 +74,18 @@ for row in reader:
 
     query = "insert into WEATHER_HOURLY(WEATHER_DATE, LOCATION_CODE, TIME, WIND_DIR, WIND_SPEED, HUMIDITY, PRESSURE, CLOUD, TEMPERATURE) values(TO_DATE(:weather_date, 'YYYY-mm-dd'), :location_code, :time, :wind_dir, :wind_speed, :humidity, :pressure, :cloud, :temperature)"
     cursor.execute(query, weather_date=date, location_code=location, time=time, wind_dir=wind_dir, wind_speed=wind_speed, humidity=humidity, pressure=pressure, cloud=cloud, temperature=temperature)
-
+    
+    # queries for min and max temperature
+    if row['MinTemp'] != 'NA' and row['MinTemp'] != row['Temp9am'] and row['MinTemp'] != row['Temp3pm']:
+        time = 1
+        temperature = row['MinTemp']
+        query = "insert into WEATHER_HOURLY(WEATHER_DATE, LOCATION_CODE, TIME, TEMPERATURE) values(TO_DATE(:weather_date, 'YYYY-mm-dd'), :location_code, :time, :temperature)"
+        cursor.execute(query, weather_date=date, location_code=location, time=time, temperature=temperature)
+    if row['MaxTemp'] != 'NA' and row['MaxTemp'] != row['MinTemp']:
+        time = 12
+        temperature = row['MaxTemp']
+        query = "insert into WEATHER_HOURLY(WEATHER_DATE, LOCATION_CODE, TIME, TEMPERATURE) values(TO_DATE(:weather_date, 'YYYY-mm-dd'), :location_code, :time, :temperature)"
+        cursor.execute(query, weather_date=date, location_code=location, time=time, temperature=temperature)
 
 cursor.close()
 con.commit()
