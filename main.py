@@ -38,7 +38,6 @@ from WEATHER_DAILY
 join LOCATIONS on LOCATIONS.LOCATION_NAME = WEATHER_DAILY.location_code
 group by LOCATION_CODE
 order by 2 desc
-FETCH FIRST 20 ROWS ONLY
 """
 
 cursor.execute(query_2)
