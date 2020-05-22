@@ -11,13 +11,16 @@ con = cx_Oracle.connect('test/passtest@//localhost:1521/xe')
 cursor = con.cursor()
 
 # ----query1------
-query_1 = """select
-LOCATIONS.LOCATION_NAME, sum(RAINFALL) as sum_rainfall
-from WEATHER_DAILY
-join LOCATIONS on LOCATIONS.LOCATION_NAME = WEATHER_DAILY.location_code
-group by LOCATION_CODE
-order by sum(RAINFALL) desc
-FETCH FIRST 5 ROWS ONLY"""
+query_1 = """select uu.LOCATION_NAME, uu.sum_rainfall
+from(
+    select
+    LOCATIONS.LOCATION_NAME, sum(RAINFALL) as sum_rainfall
+  from WEATHER_DAILY
+  join LOCATIONS on LOCATIONS.LOCATION_NAME = WEATHER_DAILY.location_code
+  group by LOCATION_CODE
+  order by sum(RAINFALL) desc
+) uu
+where rownum <= 5"""
 
 cursor.execute(query_1)
 val_query1 = list()
