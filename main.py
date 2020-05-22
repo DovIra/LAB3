@@ -33,11 +33,15 @@ for location_name, sum_rainfall in cursor:
 # ----end query1-----
 
 # ----query2------
-query_2 = """select LOCATIONS.LOCATION_NAME, sum(RAINFALL) as sum_rainfall
-from WEATHER_DAILY
-join LOCATIONS on LOCATIONS.LOCATION_NAME = WEATHER_DAILY.location_code
-group by LOCATION_CODE
-order by 2 desc
+query_2 = """select uu.LOCATION_NAME, uu.sum_rainfall
+from(
+    select LOCATIONS.LOCATION_NAME, sum(RAINFALL) as sum_rainfall
+    from WEATHER_DAILY
+    join LOCATIONS on LOCATIONS.LOCATION_NAME = WEATHER_DAILY.location_code
+    group by LOCATION_CODE
+    order by 2 desc
+) uu
+where rownum <= 20
 """
 
 cursor.execute(query_2)
