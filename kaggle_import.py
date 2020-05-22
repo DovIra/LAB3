@@ -86,7 +86,10 @@ for row in reader:
         temperature = row['MaxTemp']
         query = "insert into WEATHER_HOURLY(WEATHER_DATE, LOCATION_CODE, TIME, TEMPERATURE) values(TO_DATE(:weather_date, 'YYYY-mm-dd'), :location_code, :time, :temperature)"
         cursor.execute(query, weather_date=date, location_code=location, time=time, temperature=temperature)
-
+    
+    query = "commit"
+    cursor.execute(query)
+    
 cursor.close()
 con.commit()
 con.close()
