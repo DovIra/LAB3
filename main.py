@@ -102,20 +102,20 @@ first = {
     'type': 'box',
     'boxType': 'plot',
     'fileId': 'DovIra:' + graph_query1.split('/')[4],
-    'title': '1 запит-перші 5 локацій з мах числом опадів'
+    'title': '1 request-the first 5 locations with the maximum number of precipitation'
 }
 second = {
     'type': 'box',
     'boxType': 'plot',
     'fileId': 'DovIra:' + graph_query2.split('/')[4],
-    'title': '2 запит-перші 20 міст з найбільшою кількістю опадів у %, по Австралії',
+    'title': '2 request-the first 20 cities with the highest rainfall in%, in Australia',
 
 }
 thirth = {
     'type': 'box',
     'boxType': 'plot',
     'fileId': 'DovIra:' + graph_query3.split('/')[4],
-    'title': '3 запит-динаміка середньої температури у 2017 році по місяцям'
+    'title': '3 request-dynamics of the average temperature in 2017 by months'
 }
 
 D_board.insert(first)
